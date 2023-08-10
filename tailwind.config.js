@@ -1,18 +1,27 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      colors: {
+        destaque: {
+          roxo: "#8323ff",
+          rosa: "#ff2daf",
+          amarelo: "#ffea35",
+        },
+        base: {
+          cinza: "#2b2b37",
+          "cinza-dark": "#1e1f28",
+          "cinza-medio": "#373745",
+          "cinza-light": "#8b8d9b",
+          branco: "#fff",
+        },
       },
     },
   },
   plugins: [],
-}
+};

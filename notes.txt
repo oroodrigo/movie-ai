@@ -1,0 +1,29 @@
+https://api.themoviedb.org/3/movie/{movie_id} // rota de detalhes
+
+https://api.themoviedb.org/3/movie/{movie_id}/videos // rota para trailer
+
+
+<Filme
+          key={props.id}
+          nome={props.nome}
+          id={props.id}
+          rate={props.rate}
+          duracao={props.duracao}
+          lancamento={props.lancamento}
+          poster={props.poster}
+        />
+
+
+
+<Filme
+            nome="Barbie"
+            poster="/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg"
+          />
+
+
+
+
+renderFilmes (url) {
+  getMovies(url)
+  start()
+}
