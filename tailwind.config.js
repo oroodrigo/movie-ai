@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: "370px",
+      },
       colors: {
         destaque: {
           roxo: "#8323ff",

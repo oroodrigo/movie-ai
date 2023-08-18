@@ -1,10 +1,34 @@
 import { Clock, CalendarBlank, Star } from "@phosphor-icons/react";
 
+const axios = require("axios");
+
 export default function Filme({ nome, rate, duracao, lancamento, poster, id }) {
+  const watchTrailer = async (id) => {
+    const url = `https://api.themoviedb.org/3/movie/${id}/videos`;
+
+    try {
+      const res = await axios.get(url, {
+        headers: {
+          accept: "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiYWMyMWEyM2RiZWQzZmM3OTJkN2ZlM2ZjZDZmNDE0MCIsInN1YiI6IjY0ZDE2YTgzOTQ1ZDM2MDBhY2EwMzI5NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iUMf9iVxje3WDiDYi76Hx1tQg-KWJb6VZcZac9ORPvA",
+        },
+      });
+
+      const { results } = res.data;
+
+      const youtubeVideo = results.find((video) => video.type === "Trailer");
+
+      window.open(`https://youtube.com/watch?v=${youtubeVideo.key}`, "blank");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-3 w-[194px] text-base-branco">
-      <section className="flex">
-        <h1 className="w-4/5">{nome}</h1>
+    <div className="flex flex-col gap-3 text-base-branco">
+      <section className="flex justify-between">
+        <h1 className="max-w-[250px] truncate">{nome}</h1>
         <div className="flex gap-1 items-center">
           <Star weight="fill" color="#feea35" />
           <span>{rate}</span>
@@ -29,6 +53,7 @@ export default function Filme({ nome, rate, duracao, lancamento, poster, id }) {
         </div>
       </section>
       <button
+        onClick={() => watchTrailer(id)}
         className="flex items-center w-full justify-center bg-base-cinza px-4 py-2 gap-2 rounded text-base-branco
         hover:bg-base-cinza-medio cursor-pointer"
       >

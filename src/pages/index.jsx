@@ -8,24 +8,17 @@ const outfit = Outfit({ subsets: ["latin"] });
 
 const axios = require("axios");
 
-const moviesURL = "https://api.themoviedb.org/3/movie";
+const moviesURL = "https://api.themoviedb.org/3";
 
 function select3Videos(movieList) {
-  let videos = [];
-  const getRandomNumber = () => {
-    return Math.floor(Math.random() * movieList.length);
-  };
+  const videos = new Set();
 
-  while (videos.length <= 2) {
-    let randomNumber = getRandomNumber();
-
-    if (videos.includes(randomNumber)) {
-      getRandomNumber();
-    } else {
-      videos.push(movieList[randomNumber].id);
-    }
+  while (videos.size < 3) {
+    const randomNumber = Math.floor(Math.random() * movieList.length);
+    videos.add(movieList[randomNumber].id);
   }
-  return [...videos];
+
+  return Array.from(videos);
 }
 
 async function getMoreInfo(id) {
@@ -51,7 +44,7 @@ function minutesToHour(minutes) {
 }
 
 export default function Home() {
-  const [movieList, setMovieList] = useState(null);
+  const [moviesToRender, setMoviesToRender] = useState([]);
 
   const getMovies = async (url) => {
     try {
@@ -63,26 +56,12 @@ export default function Home() {
         },
       });
 
-      setMovieList(res.data.results);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      const movieList = res.data.results;
+      const chosenMovies = select3Videos(movieList);
 
-  useEffect(() => {
-    const popularMovies = `${moviesURL}/popular`;
-
-    getMovies(popularMovies);
-  }, []);
-
-  function start() {
-    if (movieList) {
-      //selecionar 3 filmes randomicamente
-      const chosenMovies = select3Videos(movieList).map(async (movie) => {
-        // pegar mais infos
+      const moviePromises = chosenMovies.map(async (movie) => {
         const movieInfo = await getMoreInfo(movie);
-        //organizar os dados
-        const props = {
+        return {
           id: movieInfo.id,
           nome: movieInfo.title,
           rate: Number(movieInfo.vote_average).toFixed(1),
@@ -90,55 +69,54 @@ export default function Home() {
           lancamento: movieInfo.release_date.slice(0, 4),
           poster: movieInfo.poster_path,
         };
-
-        return (
-          <Filme
-            key={props.id}
-            nome={props.nome}
-            id={props.id}
-            rate={props.rate}
-            duracao={props.duracao}
-            lancamento={props.lancamento}
-            poster={props.poster}
-          />
-        );
       });
 
-      console.log("entrou na promise");
-      console.log(Promise.all(chosenMovies));
-
-      return Promise.all(chosenMovies);
+      const resolvedMovies = await Promise.all(moviePromises);
+      setMoviesToRender(resolvedMovies);
+    } catch (error) {
+      console.log(error);
     }
-    console.log("nao entrou na promise");
-  }
+  };
+
+  const popularMovies = `${moviesURL}/trending/movie/week`;
+
+  useEffect(() => {
+    getMovies(popularMovies);
+  }, []);
 
   return (
     <div
-      className={`h-screen flex items-center justify-center bg-gradient-to-br from-destaque-roxo to-destaque-rosa ${outfit.className}`}
+      className={`min-h-screen p-10 flex items-center justify-center bg-gradient-to-br from-destaque-roxo to-destaque-rosa ${outfit.className}`}
     >
-      <div className="py-16 px-24 flex flex-col gap-9 bg-base-cinza-dark w-3/5 rounded-2xl border-4 border-purple-500">
-        <header className="w-full flex justify-between">
-          <Image
-            alt={"Logo do Site"}
-            src={"/Logo.svg"}
-            width={85}
-            height={44}
-            priority
-          ></Image>
-          <BotaoGerador />
+      <div
+        className="py-16 px-10 flex flex-col gap-9 bg-base-cinza-dark w-full rounded-2xl border-4 border-purple-500
+      lg:w-3/5 lg:px-24"
+      >
+        <header
+          className="w-full flex flex-col gap-4 justify-between items-center
+        sm:flex-row"
+        >
+          <img
+            alt="Logo do Site"
+            src="/Logo.svg"
+            className="min-w-[45px] max-w-[85px]"
+          ></img>
+          <BotaoGerador newRecomendation={() => getMovies(popularMovies)} />
         </header>
-        <main className="flex w-full gap-9">
-          {/* <Filme
-            nome="Barbie"
-            poster="/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg"
-            duracao="2:09:12"
-            lancamento="2023"
-            rate="4.0"
-          /> */}
-
-          {/* ^^^ exemplo de como deve ficar ^^^ */}
-
-          {start()}
+        <main className="flex flex-col lg:flex-row w-full justify-center items-center p-2 gap-9">
+          {moviesToRender.map((movie) => {
+            return (
+              <Filme
+                key={movie.id}
+                nome={movie.nome}
+                id={movie.id}
+                rate={movie.rate}
+                duracao={movie.duracao}
+                lancamento={movie.lancamento}
+                poster={movie.poster}
+              />
+            );
+          })}
         </main>
       </div>
     </div>
