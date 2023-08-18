@@ -5,6 +5,7 @@
 </p>
 
 ## Demo
+Link do site: https://oroodrigo-movie-ai.netlify.app
 
 ## 🚀 Tecnologias
 
