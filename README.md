@@ -5,7 +5,8 @@
 </p>
 
 ## Demo
+Link do site: https://oroodrigo-movie-ai.netlify.app
 
 ## 🚀 Tecnologias
 
-Projeto desenvolviedo com Next.js e TailwindCSS.
+Projeto desenvolvido com Next.js e TailwindCSS.
