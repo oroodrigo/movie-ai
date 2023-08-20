@@ -1,6 +1,6 @@
 import { CircleNotch, Lightning } from "@phosphor-icons/react";
 
-export default function BotaoGerador({ newRecomendation }) {
+export default function BotaoGerador({ newRecomendation, loading }) {
   return (
     <button
       onClick={newRecomendation}
@@ -8,13 +8,21 @@ export default function BotaoGerador({ newRecomendation }) {
     hover:from-purple-500 hover:from-30% hover:to-destaque-rosa transition-colors "
     >
       Nova Recomendação
-      <div
-        className="w-6 h-6 p-1 justify-center self-end items-center xs:inline-flex bg-white/30 rounded-full cursor-pointer
+      {loading ? (
+        <div
+          className="w-6 h-6 p-1 justify-center self-end items-center xs:inline-flex bg-white/30 rounded-full cursor-pointer
       group-hover:bg-white/40 transition-colors hidden"
-      >
-        <Lightning className="w-4 h-4 relative flex-col justify-start items-start flex text-base-branco " />
-        {/* <CircleNotch className="w-4 h-4 relative flex-col justify-start items-start flex text-base-branco" /> */}
-      </div>
+        >
+          <Lightning className="w-4 h-4 relative flex-col justify-start items-start flex text-base-branco " />
+        </div>
+      ) : (
+        <div
+          className="w-6 h-6 p-1 justify-center self-end items-center xs:inline-flex bg-white/30 rounded-full cursor-pointer
+      group-hover:bg-white/40 transition-colors hidden"
+        >
+          <CircleNotch className="w-4 h-4 relative flex-col justify-start items-start flex text-base-branco animate-spin" />
+        </div>
+      )}
     </button>
   );
 }

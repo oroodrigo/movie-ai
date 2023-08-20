@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       screens: {
         xs: "370px",
+        md2: "1200px",
       },
       colors: {
         destaque: {

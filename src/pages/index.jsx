@@ -45,8 +45,11 @@ function minutesToHour(minutes) {
 
 export default function Home() {
   const [moviesToRender, setMoviesToRender] = useState([]);
+  const [isDataFetch, setIsDataFetch] = useState(false);
 
   const getMovies = async (url) => {
+    setIsDataFetch(false);
+
     try {
       const res = await axios.get(url, {
         headers: {
@@ -73,6 +76,7 @@ export default function Home() {
 
       const resolvedMovies = await Promise.all(moviePromises);
       setMoviesToRender(resolvedMovies);
+      setIsDataFetch(true);
     } catch (error) {
       console.log(error);
     }
@@ -90,7 +94,7 @@ export default function Home() {
     >
       <div
         className="py-16 px-10 flex flex-col gap-9 bg-base-cinza-dark w-full rounded-2xl border-4 border-purple-500
-      lg:w-3/5 lg:px-24"
+      lg:w-3/4 lg:px-24"
       >
         <header
           className="w-full flex flex-col gap-4 justify-between items-center
@@ -101,9 +105,12 @@ export default function Home() {
             src="/Logo.svg"
             className="min-w-[45px] max-w-[85px]"
           ></img>
-          <BotaoGerador newRecomendation={() => getMovies(popularMovies)} />
+          <BotaoGerador
+            loading={isDataFetch}
+            newRecomendation={() => getMovies(popularMovies)}
+          />
         </header>
-        <main className="flex flex-col lg:flex-row w-full justify-center items-center p-2 gap-9">
+        <main className="flex flex-col md:flex-row w-full justify-center items-center p-2 gap-9">
           {moviesToRender.map((movie) => {
             return (
               <Filme
