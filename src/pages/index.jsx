@@ -43,6 +43,28 @@ function minutesToHour(minutes) {
   return date.toISOString().slice(11, 19);
 }
 
+const watchTrailer = async (id) => {
+  const url = `https://api.themoviedb.org/3/movie/${id}/videos`;
+
+  try {
+    const res = await axios.get(url, {
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiYWMyMWEyM2RiZWQzZmM3OTJkN2ZlM2ZjZDZmNDE0MCIsInN1YiI6IjY0ZDE2YTgzOTQ1ZDM2MDBhY2EwMzI5NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iUMf9iVxje3WDiDYi76Hx1tQg-KWJb6VZcZac9ORPvA",
+      },
+    });
+
+    const { results } = res.data;
+
+    const youtubeVideo = results.find((video) => video.type === "Trailer");
+
+    window.open(`https://youtube.com/watch?v=${youtubeVideo.key}`, "_blank");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export default function Home() {
   const [moviesToRender, setMoviesToRender] = useState([]);
   const [isDataFetch, setIsDataFetch] = useState(false);
@@ -121,6 +143,9 @@ export default function Home() {
                 duracao={movie.duracao}
                 lancamento={movie.lancamento}
                 poster={movie.poster}
+                watchTrailer={() => {
+                  watchTrailer(movie.id);
+                }}
               />
             );
           })}
