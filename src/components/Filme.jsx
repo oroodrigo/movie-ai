@@ -18,17 +18,7 @@ const watchTrailer = async (id) => {
 
     const youtubeVideo = results.find((video) => video.type === "Trailer");
 
-    const isMobileDevice =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-
-    if (isMobileDevice) {
-      const youtubeAppURL = `youtube://watch?v=${youtubeVideo.key}`;
-      window.location.href = youtubeAppURL;
-    } else {
-      window.open(`https://youtube.com/watch?v=${youtubeVideo.key}`, "_blank");
-    }
+    window.open(`https://youtube.com/watch?v=${youtubeVideo.key}`, "_blank");
   } catch (error) {
     console.log(error);
   }
