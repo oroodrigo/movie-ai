@@ -4,10 +4,10 @@ export default function Document() {
   return (
     <Html lang="pt-br">
       <Head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
         <link
           rel="apple-touch-icon"
-          href="/apple-touch-icon.png"
+          href="/favicon/apple-touch-icon.png"
           type="image/png"
           sizes="32x32"
         />
