@@ -19,7 +19,7 @@ export default function Filme({ nome, rate, duracao, lancamento, poster, id }) {
 
       const youtubeVideo = results.find((video) => video.type === "Trailer");
 
-      window.open(`https://youtube.com/watch?v=${youtubeVideo.key}`, "blank");
+      window.open(`https://youtube.com/watch?v=${youtubeVideo.key}`, "_blank");
     } catch (error) {
       console.log(error);
     }
