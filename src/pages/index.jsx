@@ -24,6 +24,7 @@ function select3Videos(movieList) {
 async function getMoreInfo(id) {
   try {
     const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}`, {
+      params: { language: "pt-br" },
       headers: {
         accept: "application/json",
         Authorization:
