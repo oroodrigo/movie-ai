@@ -82,10 +82,10 @@ export default function Home() {
     }
   };
 
-  const popularMovies = `${moviesURL}/trending/movie/week`;
+  const trendingMovies = `${moviesURL}/trending/movie/week`;
 
   useEffect(() => {
-    getMovies(popularMovies);
+    getMovies(trendingMovies);
   }, []);
 
   return (
@@ -107,7 +107,7 @@ export default function Home() {
           ></img>
           <BotaoGerador
             loading={isDataFetch}
-            newRecomendation={() => getMovies(popularMovies)}
+            newRecomendation={() => getMovies(trendingMovies)}
           />
         </header>
         <main className="flex flex-col md:flex-row w-full justify-center items-center p-2 gap-9">

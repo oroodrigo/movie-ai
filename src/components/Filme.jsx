@@ -1,8 +1,9 @@
 import { Clock, CalendarBlank, Star } from "@phosphor-icons/react";
+import { useEffect, useState } from "react";
 
 const axios = require("axios");
 
-const watchTrailer = async (id) => {
+const getTrailer = async (id) => {
   const url = `https://api.themoviedb.org/3/movie/${id}/videos`;
 
   try {
@@ -18,13 +19,21 @@ const watchTrailer = async (id) => {
 
     const youtubeVideo = results.find((video) => video.type === "Trailer");
 
-    window.open(`https://youtube.com/watch?v=${youtubeVideo.key}`, "_blank");
+    return `https://youtube.com/watch?v=${youtubeVideo.key}`;
   } catch (error) {
     console.log(error);
   }
 };
 
 export default function Filme({ nome, rate, duracao, lancamento, poster, id }) {
+  const [trailerURL, setTrailerURL] = useState(null);
+
+  useEffect(() => {
+    getTrailer(id).then((url) => {
+      setTrailerURL(url);
+    });
+  }, [id]);
+
   return (
     <div className="flex flex-col max-w-[400px] gap-3 text-base-branco">
       <section className="flex justify-between ">
@@ -57,16 +66,16 @@ export default function Filme({ nome, rate, duracao, lancamento, poster, id }) {
           </div>
         </div>
       </section>
-      <button
-        onClick={() => {
-          watchTrailer(id);
-        }}
+
+      <a
+        href={trailerURL}
+        target="_blank"
         className="flex items-center w-full justify-center bg-base-cinza px-4 py-2 gap-2 rounded text-base-branco
         hover:bg-base-cinza-medio cursor-pointer"
       >
         <img src="/Play.svg" alt="Icone de play" />
         Assistir Trailer
-      </button>
+      </a>
     </div>
   );
 }
